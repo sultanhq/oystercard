@@ -21,7 +21,14 @@ subject(:oyster) { described_class.new }
       it 'should not be able to top up over £90' do
         expect{ oyster.top_up(100) }.to raise_error "Card cannot be loaded over £#{Oystercard::MAXIMUM_BALANCE}."
       end
+    end
 
-  end
+    context "deducting fares" do
+      it 'should deduct money from the card' do
+        oyster.top_up(15)
+        oyster.deduct(10)
+        expect(oyster.balance).to eq 5
+      end
+    end
 
   end
