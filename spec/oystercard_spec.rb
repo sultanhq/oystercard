@@ -26,12 +26,6 @@ describe Card do
     expect{subject.top_up(91)}.to raise_error message
   end
 
-  it 'expects the card balance to be deducted by fare' do
-    fare = 3
-    pre_journey_balance = subject.top_up(5)
-    expect(subject.deduct(fare)).to eq (pre_journey_balance - fare)
-  end
-
   it 'checks if a card is not in use' do
     expect(subject.in_journey?).to be false
   end
