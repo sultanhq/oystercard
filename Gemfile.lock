@@ -1,7 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-<<<<<<< HEAD
     diff-lcs (1.2.5)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
@@ -16,17 +15,15 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-=======
->>>>>>> ffe7f446f49cfbaa1071a122cd999ab94157703a
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-<<<<<<< HEAD
   rspec
-=======
->>>>>>> ffe7f446f49cfbaa1071a122cd999ab94157703a
+
+RUBY VERSION
+   ruby 2.3.0p0
 
 BUNDLED WITH
    1.13.6
