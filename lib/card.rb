@@ -1,6 +1,8 @@
 class Oystercard
   DEFAULT_BALANCE = 0
   MAXIMUM_BALANCE = 90
+  MINIMUM_JOURNEY = 1
+
   attr_reader :balance
 
   def initialize(balance=DEFAULT_BALANCE)
@@ -18,6 +20,7 @@ class Oystercard
   end
 
   def touch_in
+    raise "Cannot touch in: minimum required balance is £#{MINIMUM_JOURNEY}, please top up." if balance < MINIMUM_JOURNEY
     @in_use = true
   end
 

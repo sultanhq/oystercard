@@ -40,7 +40,12 @@ describe Oystercard do
   describe "when using touch in" do
     it { is_expected.to respond_to :touch_in}
     it "should return with true" do
+      oystercard.top_up(1)
       expect(oystercard.touch_in).to eq true
+    end
+
+    it "should raise an error if balance amount is below minimum journey amount of £1" do
+      expect{oystercard.touch_in}.to raise_error "Cannot touch in: minimum required balance is £1, please top up."
     end
   end
 
@@ -54,6 +59,7 @@ describe Oystercard do
   describe "when asking if it's in journey" do
     it {is_expected.to respond_to :in_journey?}
     it "it should be true if card has touched in" do
+      oystercard.top_up(1)
       oystercard.touch_in
       expect(oystercard.in_journey?).to eq true
     end

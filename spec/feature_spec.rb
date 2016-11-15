@@ -43,9 +43,18 @@ describe "User Stories" do
   # I need to touch in and out.
   it "supports touch in and touch out" do
     card = Oystercard.new
+    card.top_up(1)
     card.touch_in
     card.touch_out
     expect{card}.to_not raise_error
+  end
+
+  #In order to pay for my journey
+  #As a customer
+  #I need to have the minimum amount (£1) for a single journey.
+  it "so that I can touch in, the balance amount must not be below the minimum journey amount of £1" do
+    card = Oystercard.new
+    expect{card.touch_in}.to raise_error "Cannot touch in: minimum required balance is £1, please top up."
   end
 
 end
