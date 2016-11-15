@@ -18,6 +18,9 @@ subject(:oyster) { described_class.new }
         oyster.top_up(90)
         expect{ oyster.top_up(1) }.to raise_error "Card cannot be loaded over £#{Oystercard::MAXIMUM_BALANCE}."
       end
+      it 'should not be able to top up over £90' do
+        expect{ oyster.top_up(100) }.to raise_error "Card cannot be loaded over £#{Oystercard::MAXIMUM_BALANCE}."
+      end
 
   end
 

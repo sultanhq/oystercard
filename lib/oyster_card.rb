@@ -9,14 +9,14 @@ attr_reader :balance
   end
 
   def top_up(amount)
-    fail "Card cannot be loaded over £#{MAXIMUM_BALANCE}." if maximum_balance?
+    fail "Card cannot be loaded over £#{MAXIMUM_BALANCE}." if maximum_balance?(amount)
     @balance += amount
   end
 
   private
 
-  def maximum_balance?
-    @balance >= MAXIMUM_BALANCE
+  def maximum_balance?(amount)
+    @balance + amount > MAXIMUM_BALANCE
   end
 
 end
