@@ -3,6 +3,7 @@ class Card
 STARTING_BALANCE = 0
 MAXIMUM_BALANCE = 90
 
+
 attr_reader :balance,:maximum_balance,:in_journey
 
   def initialize(balance = STARTING_BALANCE, maximum_balance = MAXIMUM_BALANCE, in_journey = false)
@@ -24,7 +25,9 @@ attr_reader :balance,:maximum_balance,:in_journey
     @in_journey
   end
 
-  def touch_in
+  def touch_in(fare)
+    raise "Insufficient funds" if @balance < fare
+    deduct(fare)
     @in_journey = true
   end
 
