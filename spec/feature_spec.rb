@@ -10,9 +10,12 @@ describe "User Stories" do
     expect{card.balance}.not_to raise_error
   end
 
-  it "should be initialized with a default balance of 0" do
+  # In order to keep using public transport
+  # As a customer
+  # I want to add money to my card
+  it "should be able to add money to the card" do
     card = Oystercard.new(0)
-    expect(card.balance).to eq 0
+    card.top_up(5)
+    expect(card.balance).to eq 5
   end
-
 end
