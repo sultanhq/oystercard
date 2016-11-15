@@ -31,4 +31,10 @@ subject(:oyster) { described_class.new }
       end
     end
 
+    context "touching in" do
+      it 'should set in_journey to true' do
+        oyster.touch_in
+        expect(oyster.in_journey).to be true
+      end
+    end
   end
