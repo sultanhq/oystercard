@@ -2,7 +2,8 @@ class Oystercard
 
   attr_reader :balance
 
-    Maximum_capacity = 90
+    Maximum_balance = 90
+
 
     def initialize
       @balance = 0
@@ -10,7 +11,7 @@ class Oystercard
     end
 
     def top_up(amount)
-      raise "Cannot top up: balance capacity of #{Maximum_capacity} has been exceeded" if @balance + amount > Maximum_capacity
+      raise "Cannot top up: balance capacity of #{Maximum_balance} has been exceeded" if @balance + amount > Maximum_balance
       @balance += amount
     end
 
@@ -19,6 +20,7 @@ class Oystercard
     end
 
      def touch_in
+       raise "Cannot touch in: not enough funds" if balance < 1
        @in_journey = true
      end
 
