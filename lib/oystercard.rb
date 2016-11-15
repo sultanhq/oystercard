@@ -1,18 +1,22 @@
 class Card
 
 STARTING_BALANCE = 0
-LIMIT = 90
+MAXIMUM_BALANCE = 90
 
-attr_reader :balance,:limit
+attr_reader :balance,:maximum_balance
 
-  def initialize(balance = STARTING_BALANCE, limit = LIMIT)
+  def initialize(balance = STARTING_BALANCE, maximum_balance = MAXIMUM_BALANCE)
     @balance = balance
-    @limit = limit
+    @maximum_balance = maximum_balance
   end
 
   def top_up(value)
-    raise "You cannot top-up over your limit of #{@limit}" if @balance + value > @limit
+    raise "You cannot top-up over your limit of #{@maximum_balance}" if @balance + value > @maximum_balance
     @balance += value
+  end
+
+  def deduct(fare)
+    @balance -= fare
   end
 
 end
