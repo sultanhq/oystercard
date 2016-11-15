@@ -14,11 +14,16 @@ describe Card do
 
     it 'expects the be card to be topped up' do
       card_starting_balance = subject.balance
-      expect(subject.add_money(5)).to eq (card_starting_balance + 5)
+      expect(subject.top_up(5)).to eq (card_starting_balance + 5)
     end
 
     it 'it tests that a card has a limit of 30' do
-      expect(subject.limit).to eq 30
+      expect(subject.limit).to eq 90
+    end
+
+    it 'expects the user not to be able to top-up over card limit' do
+      message = "You cannot top-up over your limit of #{subject.limit}"
+      expect{subject.top_up(91)}.to raise_error message
     end
 
 end
