@@ -37,4 +37,15 @@ describe "User Stories" do
     card.deduct(1)
     expect(card.balance).to eq 9
   end
+
+  # In order to get through the barriers.
+  # As a customer
+  # I need to touch in and out.
+  it "supports touch in and touch out" do
+    card = Oystercard.new
+    card.touch_in
+    card.touch_out
+    expect{card}.to_not raise_error
+  end
+
 end

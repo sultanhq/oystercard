@@ -36,4 +36,35 @@ describe Oystercard do
       expect(oystercard.balance).to eq 9
     end
   end
+
+  describe "when using touch in" do
+    it { is_expected.to respond_to :touch_in}
+    it "should return with true" do
+      expect(oystercard.touch_in).to eq true
+    end
+  end
+
+  describe "when using touch out" do
+    it { is_expected.to respond_to :touch_out}
+    it "should return false" do
+      expect(oystercard.touch_out).to eq false
+    end
+  end
+
+  describe "when asking if it's in journey" do
+    it {is_expected.to respond_to :in_journey?}
+    it "it should be true if card has touched in" do
+      oystercard.touch_in
+      expect(oystercard.in_journey?).to eq true
+    end
+    it "should be false if card has touched out" do
+      oystercard.touch_out
+      expect(oystercard.in_journey?).to be false
+    end
+
+  end
+
+
+
+
 end

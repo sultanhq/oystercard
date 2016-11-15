@@ -5,6 +5,7 @@ class Oystercard
 
   def initialize(balance=DEFAULT_BALANCE)
     @balance = balance
+    @in_use  = false
   end
 
   def top_up(top_up_value)
@@ -14,6 +15,18 @@ class Oystercard
 
   def deduct(fare)
     @balance -= fare
+  end
+
+  def touch_in
+    @in_use = true
+  end
+
+  def touch_out
+    @in_use = false
+  end
+
+  def in_journey?
+    @in_use
   end
 
 end
