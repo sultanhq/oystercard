@@ -31,10 +31,8 @@ attr_reader :balance,:maximum_balance,:in_journey,:entry_station
 
   def touch_out(fare)
     deduct(fare)
-    @entry_station.pop
+    @entry_station.clear
   end
-
-
 
 private
 
