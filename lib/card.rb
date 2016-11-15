@@ -12,4 +12,8 @@ attr_reader :balance
     raise "Cannot top up: balance capacity of #{Maximum_capacity} has been exceeded" if @balance + amount > Maximum_capacity
     @balance += amount
   end
+
+  def deduct(amount)
+    @balance -= amount
+  end
 end

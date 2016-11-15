@@ -14,6 +14,17 @@ describe Oystercard do
     expect(card.top_up(10)).to eq 10
   end
 end
+  context "deduct money from card" do
+  it "tests that card class responds to deduct method" do
+    expect(card).to respond_to(:deduct).with(1).argument
+  end
+
+  it "tests that money is deducted from card" do
+    card.top_up(20)
+    expect(card.deduct(10)).to eq 10
+  end
+end
+
 
   context "raise error" do
 
