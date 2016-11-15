@@ -1,14 +1,12 @@
-require_relative 'barriers'
-
 class Oystercard
 
-  attr_reader :balance, :in_journey
+  attr_reader :balance
 
     Maximum_capacity = 90
 
     def initialize
       @balance = 0
-      @in_journey = []
+      @in_journey = false
     end
 
     def top_up(amount)
@@ -20,12 +18,16 @@ class Oystercard
       @balance -= amount
     end
 
-    def touch_in(card)
-      in_journey << card
-    end
+     def touch_in
+       @in_journey = true
+     end
 
-    def touch_out(card)
-      in_journey.delete(card)
-    end
+     def touch_out
+       @in_journey = false
+     end
+
+     def in_journey?
+       @in_journey
+     end
 
   end

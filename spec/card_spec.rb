@@ -6,20 +6,12 @@ describe Oystercard do
 
   context "top up card" do
 
-  it "should test that oystercard class responds to top up method" do
-    expect(card).to respond_to(:top_up).with(1).argument
-  end
-
   it "should test that balance will change due to amount added" do
     expect(card.top_up(10)).to eq 10
   end
 end
 
   context "deduct money from card" do
-  it "tests that card class responds to deduct method" do
-    expect(card).to respond_to(:deduct).with(1).argument
-  end
-
   it "tests that money is deducted from card" do
     card.top_up(20)
     expect(card.deduct(10)).to eq 10
@@ -35,7 +27,22 @@ end
   end
 end
 
+  context "Touch in" do
 
+    it "should test that card is in journey" do
+      card.touch_in
+      expect(card).to be_in_journey
+  end
+end
+
+  context "Touch out" do
+
+    it "Test that card can be touched out" do
+      card.touch_in
+      card.touch_out
+      expect(card).not_to be_in_journey
+    end
+  end
 
 
 end
