@@ -38,17 +38,21 @@ describe Card do
 
   it 'expect a card to be "in use" once touched in' do
     subject.top_up(2)
-    expect{subject.touch_in(1)}.to change(subject, :in_journey).to true
+    expect{subject.touch_in}.to change(subject, :in_journey).to true
   end
 
   it 'expect a card not to be "in use" once touched out' do
     subject.top_up(2)
-    subject.touch_in(1)
-    expect{subject.touch_out}.to change(subject, :in_journey).to false
+    subject.touch_in
+    expect{subject.touch_out(Card::MINIMUM_FARE)}.to change(subject, :in_journey).to false
   end
 
-  it 'expect user to not be able to touch in when balance < 1' do
-    expect{ subject.touch_in(1) }.to raise_error ("Insufficient funds")
+  it 'expect user to not be able to touch in when balance is less than the minimum fare' do
+    expect{ subject.touch_in}.to raise_error ("Insufficient funds")
+  end
+
+  it 'expect a "touch_out" to deduct the minimum fare' do
+    expect{subject.touch_out(Card::MINIMUM_FARE)}.to change(subject, :balance).by -Card::MINIMUM_FARE
   end
 
 end
