@@ -18,4 +18,13 @@ describe "User Stories" do
     card.top_up(5)
     expect(card.balance).to eq 5
   end
+
+  # In order to protect my money
+  # As a customer
+  # I don't want to put too much money on my card
+  it "doesn't allow to exceed the maximum balance value of £90" do
+    card = Oystercard.new
+    card.top_up(89)
+    expect{card.top_up(2)}.to raise_error "Can't exceed maximum balance of £90."
+  end
 end
