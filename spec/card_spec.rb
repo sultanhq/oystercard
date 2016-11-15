@@ -7,16 +7,10 @@ describe Oystercard do
   context "top up card" do
 
   it "should test that balance will change due to amount added" do
-    expect(card.top_up(10)).to eq 10
+    expect{ card.top_up 10 }.to change{ card.balance }.by 10
   end
 end
 
-  context "deduct money from card" do
-  it "tests that money is deducted from card" do
-    card.top_up(20)
-    expect(card.deduct(10)).to eq 10
-  end
-end
 
   context "Touch in" do
 
@@ -35,6 +29,14 @@ end
       card.touch_out
       expect(card).not_to be_in_journey
     end
+
+    it "should test that minimum value is deducted from card at touch out" do
+      card.top_up(10)
+      card.touch_in
+      card.touch_out
+      expect{ card.touch_out }.to change{ card.balance }.by(-Oystercard::Minimum_balance)
+    end
+
   end
 
   context "raise error" do
