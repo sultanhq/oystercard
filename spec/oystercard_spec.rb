@@ -8,7 +8,7 @@ describe Card do
   end
 
     it 'expects a new card to have a starting balance of 5' do
-    expect(subject.balance).to eq 5
+    expect(subject.balance).to eq Card::STARTING_BALANCE
 
   end
 
@@ -16,4 +16,9 @@ describe Card do
       card_starting_balance = subject.balance
       expect(subject.add_money(5)).to eq (card_starting_balance + 5)
     end
+
+    it 'it tests that a card has a limit of 30' do
+      expect(subject.limit).to eq 30
+    end
+
 end
