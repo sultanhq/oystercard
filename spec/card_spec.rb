@@ -14,6 +14,7 @@ describe Oystercard do
     expect(card.top_up(10)).to eq 10
   end
 end
+
   context "deduct money from card" do
   it "tests that card class responds to deduct method" do
     expect(card).to respond_to(:deduct).with(1).argument
@@ -25,7 +26,6 @@ end
   end
 end
 
-
   context "raise error" do
 
   it "should raise error if balance is more than 90" do
@@ -34,5 +34,8 @@ end
     expect{card.top_up(100)}.to raise_error("Cannot top up: balance capacity of #{maximum_top_up} has been exceeded")
   end
 end
+
+
+
 
 end
