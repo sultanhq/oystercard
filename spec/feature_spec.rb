@@ -27,4 +27,14 @@ describe "User Stories" do
     card.top_up(89)
     expect{card.top_up(2)}.to raise_error "Can't exceed maximum balance of £90."
   end
+
+  #In order to pay for my journey
+  #As a customer
+  #I need my fare deducted from my card
+  it "allows the fare to be deducted from the balance" do
+    card = Oystercard.new
+    card.top_up(10)
+    card.deduct(1)
+    expect(card.balance).to eq 9
+  end
 end
