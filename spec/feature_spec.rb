@@ -6,10 +6,10 @@ describe "User Stories" do
   # As a customer
   # I want money on my card
   it "should have money" do
-    card = Card.new
+    card = Oystercard.new
     expect{card.money}.not_to raise_error
   end
 
-  
+
 
 end

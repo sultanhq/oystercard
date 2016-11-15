@@ -1,5 +1,5 @@
 require "card"
 
-describe Card do
+describe Oystercard do
   it {is_expected.to respond_to :money}
 end

@@ -1,4 +1,4 @@
-class Card
+class Oystercard
 
   def money
   end
