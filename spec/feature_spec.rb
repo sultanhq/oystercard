@@ -10,4 +10,6 @@ describe "User Stories" do
     expect{card.money}.not_to raise_error
   end
 
+  
+
 end
