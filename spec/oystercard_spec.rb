@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Card do
 
+let(:station)  { double("station") }
   before(Card) do
     subject.top_up(5)
   end
@@ -36,21 +37,26 @@ describe Card do
   end
 
   it 'expect a card to be "in use" once touched in' do
-    expect{subject.touch_in}.to change(subject, :in_journey).to true
+    subject.touch_in(station)
+    expect(subject.in_journey?).to be true
   end
 
   it 'expect a card not to be "in use" once touched out' do
-    subject.touch_in
-    expect{subject.touch_out(Card::MINIMUM_FARE)}.to change(subject, :in_journey).to false
+    subject.touch_in(station)
+    subject.touch_out(Card::MINIMUM_FARE)
+    expect(subject.in_journey?).to be false 
   end
 
   it 'expect user to not be able to touch in when balance is less than the minimum fare' do
     card2 = Card.new
-    expect{ card2.touch_in}.to raise_error ("Insufficient funds")
+    expect{ card2.touch_in(station)}.to raise_error ("Insufficient funds")
   end
 
   it 'expect a "touch_out" to deduct the minimum fare' do
     expect{subject.touch_out(Card::MINIMUM_FARE)}.to change(subject, :balance).by -Card::MINIMUM_FARE
   end
 
+  it 'expects card to store entry station upon touching in' do
+    expect(subject.touch_in(station)).to eq (subject.entry_station)
+  end
 end
