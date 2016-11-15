@@ -25,18 +25,6 @@ describe Oystercard do
     end
   end
 
-  describe "when using deduct" do
-    it {is_expected.to respond_to :deduct}
-
-    it {is_expected.to respond_to(:deduct).with(1).argument}
-
-    it "deducts the fare from the balance" do
-      oystercard.top_up(10)
-      oystercard.deduct(1)
-      expect(oystercard.balance).to eq 9
-    end
-  end
-
   describe "when using touch in" do
     it { is_expected.to respond_to :touch_in}
     it "should return with true" do
@@ -54,6 +42,10 @@ describe Oystercard do
     it "should return false" do
       expect(oystercard.touch_out).to eq false
     end
+    it "should deduct the minimum journey ammount" do
+      oystercard.top_up(2)
+      expect{oystercard.touch_out}.to change{oystercard.balance}.by(-1)
+    end
   end
 
   describe "when asking if it's in journey" do
@@ -67,8 +59,8 @@ describe Oystercard do
       oystercard.touch_out
       expect(oystercard.in_journey?).to be false
     end
-
   end
+
 
 
 

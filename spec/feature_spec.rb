@@ -28,15 +28,6 @@ describe "User Stories" do
     expect{card.top_up(2)}.to raise_error "Can't exceed maximum balance of £90."
   end
 
-  #In order to pay for my journey
-  #As a customer
-  #I need my fare deducted from my card
-  it "allows the fare to be deducted from the balance" do
-    card = Oystercard.new
-    card.top_up(10)
-    card.deduct(1)
-    expect(card.balance).to eq 9
-  end
 
   # In order to get through the barriers.
   # As a customer
@@ -55,6 +46,17 @@ describe "User Stories" do
   it "so that I can touch in, the balance amount must not be below the minimum journey amount of £1" do
     card = Oystercard.new
     expect{card.touch_in}.to raise_error "Cannot touch in: minimum required balance is £1, please top up."
+  end
+
+  # In order to pay for my journey
+  # As a customer
+  # When my journey is complete, I need the correct amount deducted from my card
+  it "so that i pay for a journey the minimum amount has to be deducted at touch out" do
+    card = Oystercard.new
+    card.top_up(2)
+    card.touch_in
+    card.touch_out
+    expect(card.balance).to eq 1
   end
 
 end
