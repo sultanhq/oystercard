@@ -22,4 +22,14 @@ end
         expect(journey.last_journey).to eq({:entry_station => station, :exit_station => station2})
       end
     end
+    describe "#fare" do
+      it "should return the minimum fare" do
+        journey.start_journey(station)
+        journey.end_journey(station2)
+        expect(journey.fare).to eq -1
+      end
+      it "should return a penalty fare of #6 if no entry/exit stations are present" do
+        expect(journey.fare).to eq -6
+      end
+    end
 end
