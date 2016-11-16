@@ -1,7 +1,8 @@
 require 'oyster_card'
 
 describe Oystercard do
-subject(:oyster) { described_class.new }
+  subject(:oyster) { described_class.new }
+  let(:station) { double :station }
 
     context "new card" do
     it 'should have a default balance' do
@@ -25,29 +26,40 @@ subject(:oyster) { described_class.new }
 
     context "Minimum balance" do
       it 'should not allow touching in when balance is less than minimum balance' do
-        expect{oyster.touch_in}.to raise_error("Not enough funds to travel")
+        expect{oyster.touch_in(station)}.to raise_error("Not enough funds to travel")
+      end
+    end
+
+    context "Touching in" do
+      it 'should store the station name on touching in' do
+        oyster.top_up(10)
+        expect(oyster.touch_in(station)).to eq station
       end
     end
 
     context 'in_journey?' do
       it 'should show the current journey status' do
         oyster.top_up(5)
-        oyster.touch_in
+        oyster.touch_in(station)
         expect(oyster.in_journey?).to be true
       end
     end
       context "touching out" do
       it 'should set in_journey to false' do
         oyster.top_up(5)
-        oyster.touch_in
+        oyster.touch_in(station)
         oyster.touch_out
         expect(oyster.in_journey?).to be false
       end
-
       it 'should deduct a fare from the card' do
         oyster.top_up(10)
-        oyster.touch_in
+        oyster.touch_in(station)
         expect{ oyster.touch_out }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
+      end
+      it 'should set the entry_station to nil' do
+        oyster.top_up(10)
+        oyster.touch_in(station)
+        expect(oyster.touch_out).to be nil
       end
     end
   end
