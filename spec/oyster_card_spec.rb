@@ -23,6 +23,12 @@ subject(:oyster) { described_class.new }
       end
     end
 
+    context "Minimum balance" do
+      it 'should not allow touching in when balance is less than minimum balance' do
+        expect{oyster.touch_in}.to raise_error("Not enough funds to travel")
+      end
+    end
+
     context "deducting fares" do
       it 'should deduct money from the card' do
         oyster.top_up(15)
@@ -33,12 +39,14 @@ subject(:oyster) { described_class.new }
 
     context 'in_journey?' do
       it 'should show the current journey status' do
-      oyster.touch_in
-      expect(oyster.in_journey?).to be true
+        oyster.top_up(5)
+        oyster.touch_in
+        expect(oyster.in_journey?).to be true
       end
     end
       context "touching out" do
       it 'should set in_journey to false' do
+        oyster.top_up(5)
         oyster.touch_in
         oyster.touch_out
         expect(oyster.in_journey?).to be false
