@@ -3,12 +3,22 @@ require "card"
 describe Oystercard do
   subject(:oystercard) { described_class.new }
   let(:station) {double(:station)}
+  let(:station2) {double(:station)}
 
   it {is_expected.to respond_to :balance}
 
-  it "should be initialized with a default balance of 0" do
+  context "when initialized" do
+
+  it "it with a default balance of 0" do
     expect(oystercard.balance).to eq 0
   end
+
+  it "it with an array of journeys" do
+    expect(oystercard.all_journeys).to eq([])
+  end
+
+
+end
 
   context "when using top_up" do
     it {is_expected.to respond_to :top_up}
@@ -43,20 +53,34 @@ describe Oystercard do
   end
 
   describe "when using touch out" do
-    it { is_expected.to respond_to :touch_out}
+    it { is_expected.to respond_to(:touch_out).with(1).argument}
     it "should return false" do
-      expect(oystercard.touch_out).to eq true
+      expect(oystercard.touch_out(station)).to eq true
     end
     it "should deduct the minimum journey ammount" do
       oystercard.top_up(2)
-      expect{oystercard.touch_out}.to change{oystercard.balance}.by(-1)
+      expect{oystercard.touch_out(station)}.to change{oystercard.balance}.by(-1)
     end
     it "should delete the entry station" do
       oystercard.top_up(2)
       oystercard.touch_in('Barbican')
-      oystercard.touch_out
+      oystercard.touch_out(station)
       expect(oystercard.entry_station).to eq nil
     end
+    it "should store a journey hash" do
+      oystercard.top_up(89)
+      oystercard.touch_in(station)
+      oystercard.touch_out(station2)
+      expect(oystercard.journey).to eq({:entry_station => station, :exit_station => station2})
+    end
+
+    it "should store the journey hash into the all journeys array" do
+      oystercard.top_up(67)
+      oystercard.touch_in(station)
+      oystercard.touch_out(station2)
+      expect(oystercard.all_journeys).to eq([{:entry_station => station, :exit_station => station2}])
+    end
+
   end
 
   describe "when asking if it's in journey" do
@@ -67,7 +91,7 @@ describe Oystercard do
       expect(oystercard.in_journey?).to eq true
     end
     it "should be false if card has touched out" do
-      oystercard.touch_out
+      oystercard.touch_out(station)
       expect(oystercard.in_journey?).to be false
     end
   end
