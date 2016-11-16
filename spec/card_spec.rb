@@ -38,10 +38,7 @@ end
 
   context "when using touch in" do
     it { is_expected.to respond_to(:touch_in).with(1).argument}
-    it "should return with true" do
-      oystercard.top_up(1)
-      expect(oystercard.touch_in(station)).to eq true
-    end
+
     it "should raise an error if balance amount is below minimum journey amount of £1" do
       expect{oystercard.touch_in(station)}.to raise_error "Cannot touch in: minimum required balance is £1, please top up."
     end
@@ -62,11 +59,7 @@ end
 
   describe "when using touch out" do
     it { is_expected.to respond_to(:touch_out).with(1).argument}
-    it "should return true" do
-      oystercard.top_up(5)
-      oystercard.touch_in(station)
-      expect(oystercard.touch_out(station)).to eq true
-    end
+    
     it "should deduct the minimum journey ammount" do
       oystercard.top_up(2)
       oystercard.touch_in(station)
