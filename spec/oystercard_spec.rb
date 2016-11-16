@@ -1,4 +1,4 @@
-require 'oystercard'
+require './lib/oystercard.rb'
 
 describe Card do
   subject(:card) { Card.new(5) }
@@ -45,7 +45,8 @@ describe Card do
   end
 
   it 'expect a "touch_out" to deduct the minimum fare' do
-    expect{card.touch_out(station)}.to change(card, :balance).by -Card::MINIMUM_FARE
+    card.touch_in(station)
+    expect{card.touch_out(station)}.to change(card, :balance).by -Journey::MINIMUM_FARE
   end
 
   it 'expects card to store entry station upon touching in' do
@@ -70,9 +71,8 @@ describe Card do
     it 'should return a stored journey' do
       card.touch_in(station)
       card.touch_out(second_station)
-      expect(card.journeys).to eq [{station => second_station}]
+      expect(card.journeys.last).to be_a_kind_of(Journey)
     end
-
 
   end
 end
