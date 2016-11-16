@@ -45,33 +45,39 @@ end
     it "should raise an error if balance amount is below minimum journey amount of £1" do
       expect{oystercard.touch_in(station)}.to raise_error "Cannot touch in: minimum required balance is £1, please top up."
     end
-    it "it should return the entry station" do
-      oystercard.top_up(2)
-      oystercard.touch_in('Barbican')
-      expect(oystercard.entry_station).to eq "Barbican"
+
+    it "should charge a penalty if touched in twice" do
+      oystercard.top_up(10)
+      oystercard.touch_in(station)
+      oystercard.touch_in(station)
+      expect(oystercard.balance).to eq 4
+    end
+
+    it "should charge a penalty if not touced in" do
+      oystercard.top_up(10)
+      oystercard.touch_out(station)
+      expect(oystercard.balance).to eq 4
     end
   end
 
   describe "when using touch out" do
     it { is_expected.to respond_to(:touch_out).with(1).argument}
-    it "should return false" do
+    it "should return true" do
+      oystercard.top_up(5)
+      oystercard.touch_in(station)
       expect(oystercard.touch_out(station)).to eq true
     end
     it "should deduct the minimum journey ammount" do
       oystercard.top_up(2)
+      oystercard.touch_in(station)
       expect{oystercard.touch_out(station)}.to change{oystercard.balance}.by(-1)
     end
-    it "should delete the entry station" do
-      oystercard.top_up(2)
-      oystercard.touch_in('Barbican')
-      oystercard.touch_out(station)
-      expect(oystercard.entry_station).to eq nil
-    end
+
     it "should store a journey hash" do
       oystercard.top_up(89)
       oystercard.touch_in(station)
       oystercard.touch_out(station2)
-      expect(oystercard.journey).to eq({:entry_station => station, :exit_station => station2})
+
     end
 
     it "should store the journey hash into the all journeys array" do
@@ -84,7 +90,7 @@ end
   end
 
   describe "when asking if it's in journey" do
-    it {is_expected.to respond_to :in_journey?}
+
     it "it should be true if card has touched in" do
       oystercard.top_up(1)
       oystercard.touch_in(station)
