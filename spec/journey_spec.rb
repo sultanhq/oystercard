@@ -2,8 +2,8 @@ require 'journey'
 
 describe Journey do
   subject(:journey) {Journey.new}
-  let(:start_station) {double(:aldgate_east)}
-  let(:finish_station) {double(:whitchapel)}
+  let(:start_station) {double(:aldgate_east, :zone => 1)}
+  let(:finish_station) {double(:whitchapel, :zone => 2)}
   context 'Journey'
 
   it 'should accept an argument' do
@@ -33,7 +33,8 @@ describe Journey do
   it 'should charge minimum fare if journey is complete' do
     journey.start(start_station)
     journey.finish(finish_station)
-    expect(journey.fare).to eq Journey::MINIMUM_FARE
+    expect(journey.fare).to eq Journey::MINIMUM_FARE +
+      (start_station.zone - finish_station.zone).abs
   end
 
   it 'should charge penalty fare if journey is incomplete' do

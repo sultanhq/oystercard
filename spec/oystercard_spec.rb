@@ -2,7 +2,7 @@ require './lib/oystercard.rb'
 
 describe Card do
   subject(:card) { Card.new(5) }
-  let(:station)  { double("London") }
+  let(:station)  { double("Aldgate East", :zone => 1) }
 
   it 'test the a new card an be created' do
     expect(card).to be_a_kind_of(Card)
@@ -55,7 +55,7 @@ describe Card do
   end
 
   context 'Journey History' do
-    let(:second_station) {double ("Kent") }
+    let(:second_station) {double("Whitechapel", :zone => 2) }
 
     it 'should accept an argument on touch out' do
       expect(card).to respond_to(:touch_out).with(1).argument
@@ -66,4 +66,5 @@ describe Card do
     end
 
   end
+
 end

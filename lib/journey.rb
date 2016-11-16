@@ -27,8 +27,14 @@ class Journey
   end
 
   def fare
-    return MINIMUM_FARE if complete?
+    return calculated_fare if complete?
     PENALTY_FARE
+  end
+
+private
+
+  def calculated_fare
+    MINIMUM_FARE + (entry_station.zone - exit_station.zone).abs
   end
 
 end
