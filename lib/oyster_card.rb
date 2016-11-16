@@ -15,9 +15,6 @@ attr_reader :balance
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
 
   def touch_in
     fail "Not enough funds to travel" if @balance < MINIMUM_BALANCE
@@ -29,10 +26,14 @@ attr_reader :balance
   end
 
   def touch_out
+    deduct(MINIMUM_BALANCE)
     @in_journey = false
   end
 
   private
 
+  def deduct(amount)
+    @balance -= amount
+  end
 
 end

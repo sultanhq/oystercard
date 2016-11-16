@@ -29,14 +29,6 @@ subject(:oyster) { described_class.new }
       end
     end
 
-    context "deducting fares" do
-      it 'should deduct money from the card' do
-        oyster.top_up(15)
-        oyster.deduct(10)
-        expect(oyster.balance).to eq 5
-      end
-    end
-
     context 'in_journey?' do
       it 'should show the current journey status' do
         oyster.top_up(5)
@@ -50,6 +42,12 @@ subject(:oyster) { described_class.new }
         oyster.touch_in
         oyster.touch_out
         expect(oyster.in_journey?).to be false
+      end
+
+      it 'should deduct a fare from the card' do
+        oyster.top_up(10)
+        oyster.touch_in
+        expect{ oyster.touch_out }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
       end
     end
   end
