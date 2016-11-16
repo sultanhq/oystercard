@@ -1,21 +1,20 @@
 class Card
 
-STARTING_BALANCE = 0
-MAXIMUM_BALANCE = 90
-MINIMUM_FARE = 1
+  STARTING_BALANCE = 0
+  MAXIMUM_BALANCE = 90
+  MINIMUM_FARE = 1
 
-attr_reader :balance,:maximum_balance,:in_journey,:entry_station
+  attr_reader :balance, :entry_station
 
 
-  def initialize(balance = STARTING_BALANCE, maximum_balance = MAXIMUM_BALANCE, in_journey = false)
+  def initialize(balance = STARTING_BALANCE)
     @balance = balance
-    @maximum_balance = maximum_balance
-    @in_journey = in_journey
+    @maximum_balance = MAXIMUM_BALANCE
     @entry_station = []
   end
 
   def top_up(value)
-    raise "You cannot top-up over your limit of #{@maximum_balance}" if @balance + value > @maximum_balance
+    raise "You cannot top-up over your limit of #{MAXIMUM_BALANCE}" if balance + value > MAXIMUM_BALANCE
     @balance += value
   end
 
@@ -25,19 +24,23 @@ attr_reader :balance,:maximum_balance,:in_journey,:entry_station
   end
 
   def touch_in(station)
-    raise "Insufficient funds" if @balance < MINIMUM_FARE
+    raise "Insufficient funds" if under_minimum_balance?
     @entry_station << station
   end
 
-  def touch_out(fare)
-    deduct(fare)
+  def touch_out
+    deduct(MINIMUM_FARE)
     @entry_station.clear
   end
 
-private
+  private
 
   def deduct(fare)
     @balance -= fare
+  end
+
+  def under_minimum_balance?
+    balance < MINIMUM_FARE
   end
 
 end
