@@ -51,11 +51,7 @@ describe "User Stories" do
     # In order to pay for my journey
     # As a customer
     # I need to know where I've travelled from
-    it "i need to know where I've travelled from" do
-      p card.balance
-      card.touch_in("Barbican")
-      expect(card.entry_station).to eq "Barbican"
-    end
+
 
     # In order to know where I have been
     # As a customer
@@ -74,9 +70,23 @@ describe "User Stories" do
       station = Station.new("Barbican", "Zone1")
       expect(station.zone).to eq "Zone1"
     end
+   #  In order to be charged correctly
+   # As a customer
+   # I need a penalty charge deducted if I fail to touch in or out
+   it "should charge a penalty charge deducted if I fail to touch in " do
+     card.touch_in('Bermondsey')
+     card.touch_in('Tower Bridge')
+     expect(card.balance).to eq 4
+   end
+
+   it "should charge a penalty charge deducted if I fail to touch out" do
+
+     card.touch_out('Bermondsey')
+     expect(card.balance).to eq 4
+   end
+ end
 
 
-  end
 context "when card doesn't need to be topped up" do
     it "so that I can touch in, the balance amount must not be below the minimum journey amount of £1" do
       expect{card.touch_in(station)}.to raise_error "Cannot touch in: minimum required balance is £1, please top up."
@@ -85,5 +95,7 @@ context "when card doesn't need to be topped up" do
     it "card should be able to hold money" do
       expect{card.balance}.not_to raise_error
     end
+
+
   end
 end
