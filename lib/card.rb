@@ -19,7 +19,7 @@ class Oystercard
     @balance += top_up_value
   end
 
-  def touch_in(station)
+  def touch_in(station2)
 
     raise "Cannot touch in: minimum required balance is £#{MINIMUM_JOURNEY}, please top up." if @balance < MINIMUM_JOURNEY
   end
