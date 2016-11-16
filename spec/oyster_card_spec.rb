@@ -2,11 +2,18 @@ require 'oyster_card'
 
 describe Oystercard do
   subject(:oyster) { described_class.new }
-  let(:station) { double :station }
+  let(:entry_station) { double :entry_station }
+  let(:exit_station) {double :exit_station}
 
     context "new card" do
     it 'should have a default balance' do
       expect(oyster.balance).to eq 0
+    end
+    it 'should have an empty journey history' do
+      expect(oyster.station_history).to be_empty
+    end
+    it 'should have no entry station before touching in' do
+      expect(oyster.entry_station).to be_nil
     end
   end
 
@@ -26,21 +33,21 @@ describe Oystercard do
 
     context "Minimum balance" do
       it 'should not allow touching in when balance is less than minimum balance' do
-        expect{oyster.touch_in(station)}.to raise_error("Not enough funds to travel")
+        expect{oyster.touch_in(entry_station)}.to raise_error("Not enough funds to travel")
       end
     end
 
     context "touching in" do
       it 'should store the station name on touching in' do
         oyster.top_up(10)
-        expect(oyster.touch_in(station)).to eq station
+        expect(oyster.touch_in(entry_station)).to eq entry_station
       end
     end
 
     context 'in_journey?' do
       it 'should show the current journey status' do
         oyster.top_up(5)
-        oyster.touch_in(station)
+        oyster.touch_in(entry_station)
         expect(oyster.in_journey?).to be true
       end
     end
@@ -48,17 +55,33 @@ describe Oystercard do
     context "touching out" do
         before do
           oyster.top_up(10)
-          oyster.touch_in(station)
+          oyster.touch_in(entry_station)
         end
       it 'should set in_journey to false' do
-        oyster.touch_out
+        oyster.touch_out(exit_station)
         expect(oyster.in_journey?).to be false
       end
       it 'should deduct a fare from the card' do
-        expect{ oyster.touch_out }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
+        expect{ oyster.touch_out(exit_station) }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
       end
       it 'should set the entry_station to nil' do
-        expect(oyster.touch_out).to be nil
+        expect(oyster.touch_out(exit_station)).to be nil
       end
     end
+
+    context "one journey" do
+      before do
+        oyster.top_up(10)
+        oyster.touch_in(entry_station)
+        oyster.touch_out(exit_station)
+      end
+      it 'should assign the entry station to its hash key' do
+        expect(oyster.station_history[-1]).to have_value entry_station
+      end
+      it 'should assign the exit station to its hash key' do
+        expect(oyster.station_history[-1]).to have_value exit_station
+      end
+    end
+
+
   end
