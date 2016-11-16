@@ -31,10 +31,17 @@ subject(:oyster) { described_class.new }
       end
     end
 
-    context "touching in" do
-      it 'should set in_journey to true' do
+    context 'in_journey?' do
+      it 'should show the current journey status' do
+      oyster.touch_in
+      expect(oyster.in_journey?).to be true
+      end
+    end
+      context "touching out" do
+      it 'should set in_journey to false' do
         oyster.touch_in
-        expect(oyster.in_journey).to be true
+        oyster.touch_out
+        expect(oyster.in_journey?).to be false
       end
     end
   end
