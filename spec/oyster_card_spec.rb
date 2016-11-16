@@ -30,7 +30,7 @@ describe Oystercard do
       end
     end
 
-    context "Touching in" do
+    context "touching in" do
       it 'should store the station name on touching in' do
         oyster.top_up(10)
         expect(oyster.touch_in(station)).to eq station
@@ -44,21 +44,20 @@ describe Oystercard do
         expect(oyster.in_journey?).to be true
       end
     end
-      context "touching out" do
+
+    context "touching out" do
+        before do
+          oyster.top_up(10)
+          oyster.touch_in(station)
+        end
       it 'should set in_journey to false' do
-        oyster.top_up(5)
-        oyster.touch_in(station)
         oyster.touch_out
         expect(oyster.in_journey?).to be false
       end
       it 'should deduct a fare from the card' do
-        oyster.top_up(10)
-        oyster.touch_in(station)
         expect{ oyster.touch_out }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
       end
       it 'should set the entry_station to nil' do
-        oyster.top_up(10)
-        oyster.touch_in(station)
         expect(oyster.touch_out).to be nil
       end
     end

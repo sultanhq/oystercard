@@ -7,7 +7,6 @@ attr_reader :balance, :entry_station
 
   def initialize
     @balance = 0
-    @in_journey = false
     @entry_station = nil
   end
 
@@ -19,17 +18,15 @@ attr_reader :balance, :entry_station
 
   def touch_in(entry_station)
     fail "Not enough funds to travel" if @balance < MINIMUM_BALANCE
-    @in_journey = true
     @entry_station = entry_station
   end
 
   def in_journey?
-    @in_journey
+    !@entry_station.nil?
   end
 
   def touch_out
     deduct(MINIMUM_BALANCE)
-    @in_journey = false
     @entry_station = nil
   end
 
