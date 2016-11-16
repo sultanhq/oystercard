@@ -2,7 +2,7 @@ require 'oystercard'
 
 describe Card do
   subject(:card) { Card.new(5) }
-  let(:station)  { double("station") }
+  let(:station)  { double("London") }
 
   it 'test the a new card an be created' do
     expect(card).to be_a_kind_of(Card)
@@ -35,7 +35,7 @@ describe Card do
 
   it 'expect a card not to be "in use" once touched out' do
     card.touch_in(station)
-    card.touch_out
+    card.touch_out(station)
     expect(card.in_journey?).to be false
   end
 
@@ -45,10 +45,34 @@ describe Card do
   end
 
   it 'expect a "touch_out" to deduct the minimum fare' do
-    expect{card.touch_out}.to change(card, :balance).by -Card::MINIMUM_FARE
+    expect{card.touch_out(station)}.to change(card, :balance).by -Card::MINIMUM_FARE
   end
 
   it 'expects card to store entry station upon touching in' do
     expect(card.touch_in(station)).to eq (card.entry_station)
+  end
+
+  context 'Journey History' do
+    let(:second_station) {double ("Kent") }
+
+    it 'should accept an argument on touch out' do
+      expect(card).to respond_to(:touch_out).with(1).argument
+    end
+
+    it 'should be an array' do
+      expect(card.journeys).to be_a_kind_of(Array)
+    end
+
+    it 'should have an empty list by default' do
+      expect(card.journeys).to eq []
+    end
+
+    it 'should return a stored journey' do
+      card.touch_in(station)
+      card.touch_out(second_station)
+      expect(card.journeys).to eq [{station => second_station}]
+    end
+
+
   end
 end

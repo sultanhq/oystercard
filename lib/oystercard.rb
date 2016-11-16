@@ -4,13 +4,14 @@ class Card
   MAXIMUM_BALANCE = 90
   MINIMUM_FARE = 1
 
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :journeys
 
 
   def initialize(balance = STARTING_BALANCE)
     @balance = balance
     @maximum_balance = MAXIMUM_BALANCE
     @entry_station = []
+    @journeys = []
   end
 
   def top_up(value)
@@ -28,8 +29,9 @@ class Card
     @entry_station << station
   end
 
-  def touch_out
+  def touch_out(station)
     deduct(MINIMUM_FARE)
+    add_to_journey(station)
     @entry_station.clear
   end
 
@@ -41,6 +43,10 @@ class Card
 
   def under_minimum_balance?
     balance < MINIMUM_FARE
+  end
+
+  def add_to_journeys(station)
+    @journeys << {entry_station[0] => station}
   end
 
 end
