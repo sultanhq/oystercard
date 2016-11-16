@@ -19,6 +19,7 @@ class Oystercard
   end
 
   def touch_in(station)
+
     raise "Cannot touch in: minimum required balance is £#{MINIMUM_JOURNEY}, please top up." if @balance < MINIMUM_JOURNEY
     @entry_station = station
     true
