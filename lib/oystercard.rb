@@ -31,7 +31,7 @@ class Card
 
   def touch_out(station)
     deduct(MINIMUM_FARE)
-    add_to_journey(station)
+    add_to_journeys(station)
     @entry_station.clear
   end
 
