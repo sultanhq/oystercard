@@ -66,6 +66,16 @@ describe "User Stories" do
       card.touch_out("bermondsey")
       expect(card.all_journeys).to eq [{:entry_station => "barbican", :exit_station => "bermondsey"}]
     end
+
+    # In order to know how far I have travelled
+    # As a customer
+    # I want to know what zone a station is in
+    it "it should know what zone the station is in" do
+      station = Station.new("Barbican", "Zone1")
+      expect(station.zone).to eq "Zone1"
+    end
+
+
   end
 context "when card doesn't need to be topped up" do
     it "so that I can touch in, the balance amount must not be below the minimum journey amount of £1" do
