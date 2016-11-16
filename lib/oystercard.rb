@@ -1,4 +1,4 @@
-require_relative 'journey.rb'
+require_relative 'journey_log.rb'
 
 class Card
 
@@ -6,13 +6,13 @@ class Card
   MAXIMUM_BALANCE = 90
 
 
-  attr_reader :balance, :entry_station, :journeys
+  attr_reader :balance, :entry_station, :journey_log
 
 
   def initialize(balance = STARTING_BALANCE)
     @balance = balance
     @maximum_balance = MAXIMUM_BALANCE
-    @journeys = []
+    @journey_log = JourneyLog.new
   end
 
   def top_up(value)
@@ -27,11 +27,12 @@ class Card
   def touch_in(station)
     raise "Insufficient funds" if under_minimum_balance?
     @entry_station = station
+    journey_log.start(station)
   end
 
   def touch_out(station)
     add_to_journeys(station)
-    deduct(journeys.last.fare)
+    deduct(journey_log.journeys.last.fare)
     @entry_station = nil
   end
 
@@ -46,7 +47,7 @@ class Card
   end
 
   def add_to_journeys(station)
-    @journeys << Journey.new(entry_station).finish(station)
+    journey_log.finish(station)
   end
 
 end

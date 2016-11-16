@@ -50,7 +50,8 @@ describe Card do
   end
 
   it 'expects card to store entry station upon touching in' do
-    expect(card.touch_in(station)).to eq (card.entry_station)
+    card.touch_in(station)
+    expect(card.entry_station).to eq station
   end
 
   context 'Journey History' do
@@ -61,17 +62,7 @@ describe Card do
     end
 
     it 'should be an array' do
-      expect(card.journeys).to be_a_kind_of(Array)
-    end
-
-    it 'should have an empty list by default' do
-      expect(card.journeys).to eq []
-    end
-
-    it 'should return a stored journey' do
-      card.touch_in(station)
-      card.touch_out(second_station)
-      expect(card.journeys.last).to be_a_kind_of(Journey)
+      expect(card.journey_log).to be_a_kind_of JourneyLog
     end
 
   end
