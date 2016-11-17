@@ -54,9 +54,9 @@ describe Oystercard do
       it 'should deduct a fare from the card' do
         expect{ oyster.touch_out(exit_station) }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
       end
-      it 'should set the entry_station to nil' do
-        expect(oyster.touch_out(exit_station)).to be nil
-      end
+      # it 'should set the entry_station to nil' do
+      #   expect(oyster.touch_out(exit_station)).to be nil
+      # end
     end
 
     context "one journey" do

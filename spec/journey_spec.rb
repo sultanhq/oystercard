@@ -21,4 +21,18 @@ describe Journey do
       expect(journey.exit_station).to eq exit_station
     end
   end
+
+  context "storing trip" do
+    it "trip should be empty upon initialization" do
+      expect(journey.trip).to be_empty
+    end
+
+    it "should put the current journey into the trip hash" do
+      journey.start(entry_station)
+      journey.finish(exit_station)
+      journey.save_trip
+      expect(journey.trip).to eq({ entry_station: entry_station, exit_station: exit_station })
+    end
+
+  end
 end
