@@ -34,13 +34,6 @@ describe Oystercard do
       end
     end
 
-    context "touching in" do
-      it 'should store the station name on touching in' do
-        oyster.top_up(10)
-        expect(oyster.touch_in(entry_station)).to eq entry_station
-      end
-    end
-
     context 'in_journey?' do
       it 'should show the current journey status' do
         oyster.top_up(5)
