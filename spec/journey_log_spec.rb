@@ -9,9 +9,5 @@ describe JourneyLog do
      expect(journey_log.start).to be_instance_of(Journey)
     end
   end
-  context "when #end" do
-    expect(journey_log.finish).to be_instance_of()
-
-
-  end
+  
 end

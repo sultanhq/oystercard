@@ -59,7 +59,7 @@ end
 
   describe "when using touch out" do
     it { is_expected.to respond_to(:touch_out).with(1).argument}
-    
+
     it "should deduct the minimum journey ammount" do
       oystercard.top_up(2)
       oystercard.touch_in(station)
