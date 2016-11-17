@@ -12,9 +12,6 @@ describe Oystercard do
     it 'should have an empty journey history' do
       expect(oyster.station_history).to be_empty
     end
-    it 'should have no entry station before touching in' do
-      expect(oyster.entry_station).to be_nil
-    end
   end
 
     context "topping up" do
