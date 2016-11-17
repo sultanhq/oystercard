@@ -9,12 +9,11 @@ class Oystercard
   MINIMUM_JOURNEY = 1
   PENALTY_CHARGE = -6
 
-  attr_reader :balance, :all_journeys, :journey_log
+  attr_reader :balance, :journey_log
 
   def initialize
     @balance = DEFAULT_BALANCE
-    @all_journeys = []
-    @journey_log = JourneyLog.new
+    @journey_log = JourneyLog.new(Journey)
   end
 
   def top_up(top_up_value)
@@ -24,29 +23,26 @@ class Oystercard
 
 
     def touch_in(station)
-      if !@journey.nil? then @balance = @balance + PENALTY_CHARGE end
-      @journey = @journey_log.start
-      @journey.start_journey(station)
       raise "Cannot touch in: minimum required balance is £#{MINIMUM_JOURNEY}, please top up." if @balance < MINIMUM_JOURNEY
+      @journey_log.start(station)
     end
 
 
   def touch_out(station)
-    if @journey.nil? then return @balance = @balance + PENALTY_CHARGE  end
-    @journey.end_journey(station)
-    deduct(@journey.fare)
-    @all_journeys << @journey.last_journey
+    # if @journey.nil? then return @balance = @balance + PENALTY_CHARGE  end
+    @journey_log.finish(station)
+    deduct(MINIMUM_JOURNEY)
 
   end
 
-  def in_journey?
-    return false if @journey == nil
-    !(@journey.entry_station).nil?
-  end
+  # def in_journey?
+  #   return false if @journey == nil
+  #   !(@journey.entry_station).nil?
+  # end
 
   private
     def deduct(fare)
-      @balance += fare
+      @balance -= fare
     end
 
 end
