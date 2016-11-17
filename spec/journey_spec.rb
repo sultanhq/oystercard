@@ -38,6 +38,22 @@ describe Journey do
       journey.save_exit
       expect(journey.trip[:exit_station]).to eq(exit_station)
     end
+  end
+  context "fares" do
+    it "should charge penalty fare if touching out without touching in" do
+        journey.finish(exit_station)
+        expect(journey.total_fare).to eq 6
+    end
+    it "should charge minimum fare if touching in and out normally" do
+      journey.start(entry_station)
+      journey.finish(exit_station)
+      expect(journey.total_fare).to eq 1
+    end
 
+    it "should charge penalty fare if touching in without having touched out" do
+      journey.start(entry_station)
+      journey.start(exit_station)
+      expect(journey.total_fare).to eq 6
+    end
   end
 end

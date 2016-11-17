@@ -1,13 +1,18 @@
 class Journey
-  attr_reader :entry_station, :exit_station, :trip
+  attr_reader :entry_station, :exit_station, :trip, :total_fare
+
+  MINIMUM_FARE = 1
+  PENALTY_FARE = 6
 
   def initialize
+    @total_fare = 0
     @entry_station = nil
     @exit_station = nil
     @trip = { entry_station: nil, exit_station: nil }
   end
 
   def start(station)
+    fare unless trip[:entry_station] == nil
     self.entry_station = station
     save_entry
   end
@@ -15,6 +20,21 @@ class Journey
   def finish(station)
     self.exit_station = station
     save_exit
+    fare
+  end
+
+  def fare
+    return self.total_fare += MINIMUM_FARE if complete?
+    self.total_fare += PENALTY_FARE
+    self.trip[:entry_station] = nil
+  end
+
+  def incomplete?
+    self.trip[:entry_station].nil? || self.trip[:exit_station].nil?
+  end
+
+  def complete?
+    !incomplete?
   end
 
   def save_entry
@@ -26,5 +46,5 @@ class Journey
   end
 
   private
-  attr_writer :entry_station, :exit_station, :trip
+  attr_writer :entry_station, :exit_station, :trip, :total_fare
 end
