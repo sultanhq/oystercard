@@ -1,3 +1,5 @@
+require_relative "journey"
+
 class Oystercard
 
 attr_reader :balance, :entry_station, :station_history
@@ -17,8 +19,9 @@ attr_reader :balance, :entry_station, :station_history
   end
 
 
-  def touch_in(entry_station)
+  def touch_in(entry_station, journey = Journey.new)
     fail "Not enough funds to travel" if self.balance < MINIMUM_BALANCE
+    journey.start(entry_station)
     self.entry_station = entry_station
   end
 

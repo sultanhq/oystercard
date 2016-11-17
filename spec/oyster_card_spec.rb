@@ -4,6 +4,11 @@ describe Oystercard do
   subject(:oyster) { described_class.new }
   let(:entry_station) { double :entry_station }
   let(:exit_station) {double :exit_station}
+  let(:journey) {double :journey}
+
+  before do
+      allow(journey).to receive(:start).with(entry_station)
+  end
 
     context "new card" do
     it 'should have a default balance' do
@@ -30,14 +35,28 @@ describe Oystercard do
 
     context "Minimum balance" do
       it 'should not allow touching in when balance is less than minimum balance' do
-        expect{oyster.touch_in(entry_station)}.to raise_error("Not enough funds to travel")
+        expect{oyster.touch_in(entry_station, journey)}.to raise_error("Not enough funds to travel")
+      end
+    end
+
+    context "touch in" do
+      before do
+        oyster.top_up(10)
+      end
+      it "should start a journey" do
+      expect(oyster.touch_in(entry_station, journey)).to eq(entry_station)
+      end
+
+      it "should set in_journey? to true" do
+      oyster.touch_in(entry_station, journey)
+      expect(oyster.in_journey?).to be true
       end
     end
 
     context 'in_journey?' do
       it 'should show the current journey status' do
         oyster.top_up(5)
-        oyster.touch_in(entry_station)
+        oyster.touch_in(entry_station, journey)
         expect(oyster.in_journey?).to be true
       end
     end
@@ -45,7 +64,7 @@ describe Oystercard do
     context "touching out" do
         before do
           oyster.top_up(10)
-          oyster.touch_in(entry_station)
+          oyster.touch_in(entry_station, journey)
         end
       it 'should set in_journey to false' do
         oyster.touch_out(exit_station)
@@ -59,19 +78,6 @@ describe Oystercard do
       # end
     end
 
-    context "one journey" do
-      before do
-        oyster.top_up(10)
-        oyster.touch_in(entry_station)
-        oyster.touch_out(exit_station)
-      end
-      it 'should assign the entry station to its hash key' do
-        expect(oyster.station_history[-1]).to have_value entry_station
-      end
-      it 'should assign the exit station to its hash key' do
-        expect(oyster.station_history[-1]).to have_value exit_station
-      end
-    end
 
 
   end
