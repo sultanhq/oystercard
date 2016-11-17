@@ -24,14 +24,19 @@ describe Journey do
 
   context "storing trip" do
     it "trip should be empty upon initialization" do
-      expect(journey.trip).to be_empty
+      expect(journey.trip).to eq({ entry_station: nil, exit_station: nil })
     end
 
-    it "should put the current journey into the trip hash" do
+    it "should put the entry station into the trip hash" do
       journey.start(entry_station)
+      journey.save_entry
+      expect(journey.trip[:entry_station]).to eq(entry_station)
+    end
+
+    it "should put the exit station into the trip hash" do
       journey.finish(exit_station)
-      journey.save_trip
-      expect(journey.trip).to eq({ entry_station: entry_station, exit_station: exit_station })
+      journey.save_exit
+      expect(journey.trip[:exit_station]).to eq(exit_station)
     end
 
   end

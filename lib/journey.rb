@@ -4,19 +4,25 @@ class Journey
   def initialize
     @entry_station = nil
     @exit_station = nil
-    @trip = Hash.new
+    @trip = { entry_station: nil, exit_station: nil }
   end
 
   def start(station)
     self.entry_station = station
+    save_entry
   end
 
   def finish(station)
     self.exit_station = station
+    save_exit
   end
 
-  def save_trip
-    self.trip = { entry_station: self.entry_station, exit_station: self.exit_station }
+  def save_entry
+    self.trip[:entry_station] = self.entry_station
+  end
+
+  def save_exit
+    self.trip[:exit_station] = self.exit_station
   end
 
   private

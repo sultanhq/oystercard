@@ -45,9 +45,6 @@ describe Oystercard do
       before do
         oyster.top_up(10)
       end
-      it "should start a journey" do
-      expect(oyster.touch_in(entry_station)).to eq(entry_station)
-      end
 
       it "should set in_journey? to true" do
       oyster.touch_in(entry_station)
