@@ -8,6 +8,8 @@ describe Oystercard do
 
   before do
       allow(journey).to receive(:start).with(entry_station)
+      allow(journey).to receive(:finish).with(exit_station)
+      allow(journey).to receive(:save_trip).and_return({ entry_station: entry_station, exit_station: exit_station })
   end
 
     context "new card" do
@@ -15,7 +17,7 @@ describe Oystercard do
       expect(oyster.balance).to eq 0
     end
     it 'should have an empty journey history' do
-      expect(oyster.station_history).to be_empty
+      expect(oyster.journey_history).to be_empty
     end
   end
 
@@ -67,15 +69,16 @@ describe Oystercard do
           oyster.touch_in(entry_station, journey)
         end
       it 'should set in_journey to false' do
-        oyster.touch_out(exit_station)
+        oyster.touch_out(exit_station, journey)
         expect(oyster.in_journey?).to be false
       end
-      it 'should deduct a fare from the card' do
-        expect{ oyster.touch_out(exit_station) }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
+      it 'should store the trip in journey_history' do
+        oyster.touch_out(exit_station, journey)
+        expect(oyster.journey_history).to eq [{ entry_station: entry_station, exit_station: exit_station }]
       end
-      # it 'should set the entry_station to nil' do
-      #   expect(oyster.touch_out(exit_station)).to be nil
-      # end
+      it 'should deduct a fare from the card' do
+        expect{ oyster.touch_out(exit_station, journey) }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
+      end
     end
 
 
