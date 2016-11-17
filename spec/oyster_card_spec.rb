@@ -4,7 +4,7 @@ describe Oystercard do
   subject(:oyster) { described_class.new }
   let(:entry_station) { double :entry_station }
   let(:exit_station) {double :exit_station}
-  let(:journey) {double :journey}
+  let(:journey) { double :journey }
 
   before do
       allow(journey).to receive(:start).with(entry_station)
@@ -37,7 +37,7 @@ describe Oystercard do
 
     context "Minimum balance" do
       it 'should not allow touching in when balance is less than minimum balance' do
-        expect{oyster.touch_in(entry_station, journey)}.to raise_error("Not enough funds to travel")
+        expect{oyster.touch_in(entry_station)}.to raise_error("Not enough funds to travel")
       end
     end
 
@@ -46,11 +46,11 @@ describe Oystercard do
         oyster.top_up(10)
       end
       it "should start a journey" do
-      expect(oyster.touch_in(entry_station, journey)).to eq(entry_station)
+      expect(oyster.touch_in(entry_station)).to eq(entry_station)
       end
 
       it "should set in_journey? to true" do
-      oyster.touch_in(entry_station, journey)
+      oyster.touch_in(entry_station)
       expect(oyster.in_journey?).to be true
       end
     end
@@ -58,7 +58,7 @@ describe Oystercard do
     context 'in_journey?' do
       it 'should show the current journey status' do
         oyster.top_up(5)
-        oyster.touch_in(entry_station, journey)
+        oyster.touch_in(entry_station)
         expect(oyster.in_journey?).to be true
       end
     end
@@ -66,18 +66,18 @@ describe Oystercard do
     context "touching out" do
         before do
           oyster.top_up(10)
-          oyster.touch_in(entry_station, journey)
+          oyster.touch_in(entry_station)
         end
       it 'should set in_journey to false' do
-        oyster.touch_out(exit_station, journey)
+        oyster.touch_out(exit_station)
         expect(oyster.in_journey?).to be false
       end
       it 'should store the trip in journey_history' do
-        oyster.touch_out(exit_station, journey)
+        oyster.touch_out(exit_station)
         expect(oyster.journey_history).to eq [{ entry_station: entry_station, exit_station: exit_station }]
       end
       it 'should deduct a fare from the card' do
-        expect{ oyster.touch_out(exit_station, journey) }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
+        expect{ oyster.touch_out(exit_station) }.to change{ oyster.balance }.by(-Oystercard::MINIMUM_BALANCE)
       end
     end
 
