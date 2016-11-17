@@ -4,8 +4,6 @@ class Journey
   MINIMUM_FARE = -1
   PENALTY_FARE = -6
   def start_journey(station)
-
-
     @entry_station = station
   end
 
